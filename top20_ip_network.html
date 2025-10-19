@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "130.14.250.7", "label": "130.14.250.7", "shape": "dot", "title": "Total traffic: 7657472", "value": 51.5629168519342}, {"color": "#97c2fc", "id": "103.37.198.100", "label": "103.37.198.100", "shape": "dot", "title": "Total traffic: 7657472", "value": 51.5629168519342}, {"color": "#97c2fc", "id": "171.67.77.19", "label": "171.67.77.19", "shape": "dot", "title": "Total traffic: 7430144", "value": 50.32903512672299}, {"color": "#97c2fc", "id": "192.122.131.36", "label": "192.122.131.36", "shape": "dot", "title": "Total traffic: 9211904", "value": 60.0}, {"color": "#97c2fc", "id": "129.99.230.54", "label": "129.99.230.54", "shape": "dot", "title": "Total traffic: 4294656", "value": 33.31036016007114}, {"color": "#97c2fc", "id": "137.132.22.74", "label": "137.132.22.74", "shape": "dot", "title": "Total traffic: 4294656", "value": 33.31036016007114}, {"color": "#97c2fc", "id": "137.132.228.42", "label": "137.132.228.42", "shape": "dot", "title": "Total traffic: 4853760", "value": 36.345042240995994}, {"color": "#97c2fc", "id": "137.131.17.212", "label": "137.131.17.212", "shape": "dot", "title": "Total traffic: 4853760", "value": 36.345042240995994}, {"color": "#97c2fc", "id": "155.69.252.133", "label": "155.69.252.133", "shape": "dot", "title": "Total traffic: 3020800", "value": 26.396176078257003}, {"color": "#97c2fc", "id": "138.75.242.36", "label": "138.75.242.36", "shape": "dot", "title": "Total traffic: 3020800", "value": 26.396176078257003}, {"color": "#97c2fc", "id": "13.107.4.50", "label": "13.107.4.50", "shape": "dot", "title": "Total traffic: 2639872", "value": 24.32859048465985}, {"color": "#97c2fc", "id": "210.48.222.13", "label": "210.48.222.13", "shape": "dot", "title": "Total traffic: 2639872", "value": 24.32859048465985}, {"color": "#97c2fc", "id": "155.69.203.215", "label": "155.69.203.215", "shape": "dot", "title": "Total traffic: 2574336", "value": 23.972876834148508}, {"color": "#97c2fc", "id": "74.125.10.7", "label": "74.125.10.7", "shape": "dot", "title": "Total traffic: 2574336", "value": 23.972876834148508}, {"color": "#97c2fc", "id": "192.170.233.203", "label": "192.170.233.203", "shape": "dot", "title": "Total traffic: 2449408", "value": 23.29479768786127}, {"color": "#97c2fc", "id": "202.6.241.101", "label": "202.6.241.101", "shape": "dot", "title": "Total traffic: 4368384", "value": 33.7105380168964}, {"color": "#97c2fc", "id": "202.21.159.246", "label": "202.21.159.246", "shape": "dot", "title": "Total traffic: 3674112", "value": 29.942196531791907}, {"color": "#97c2fc", "id": "104.146.199.27", "label": "104.146.199.27", "shape": "dot", "title": "Total traffic: 3674112", "value": 29.942196531791907}, {"color": "#97c2fc", "id": "155.69.59.250", "label": "155.69.59.250", "shape": "dot", "title": "Total traffic: 2187264", "value": 21.871943085815918}, {"color": "#97c2fc", "id": "175.156.89.102", "label": "175.156.89.102", "shape": "dot", "title": "Total traffic: 2187264", "value": 21.871943085815918}, {"color": "#97c2fc", "id": "212.219.56.184", "label": "212.219.56.184", "shape": "dot", "title": "Total traffic: 2172928", "value": 21.794130724766564}, {"color": "#97c2fc", "id": "137.132.204.235", "label": "137.132.204.235", "shape": "dot", "title": "Total traffic: 2172928", "value": 21.794130724766564}, {"color": "#97c2fc", "id": "74.125.68.132", "label": "74.125.68.132", "shape": "dot", "title": "Total traffic: 1982464", "value": 20.76033792796799}, {"color": "#97c2fc", "id": "123.136.64.32", "label": "123.136.64.32", "shape": "dot", "title": "Total traffic: 1982464", "value": 20.76033792796799}, {"color": "#97c2fc", "id": "192.170.233.204", "label": "192.170.233.204", "shape": "dot", "title": "Total traffic: 1918976", "value": 20.415740329035124}, {"color": "#97c2fc", "id": "103.31.34.2", "label": "103.31.34.2", "shape": "dot", "title": "Total traffic: 1855488", "value": 20.071142730102267}, {"color": "#97c2fc", "id": "129.107.118.39", "label": "129.107.118.39", "shape": "dot", "title": "Total traffic: 1855488", "value": 20.071142730102267}, {"color": "#97c2fc", "id": "155.69.120.64", "label": "155.69.120.64", "shape": "dot", "title": "Total traffic: 1837056", "value": 19.971098265895954}, {"color": "#97c2fc", "id": "74.125.68.95", "label": "74.125.68.95", "shape": "dot", "title": "Total traffic: 1837056", "value": 19.971098265895954}, {"color": "#97c2fc", "id": "158.109.8.13", "label": "158.109.8.13", "shape": "dot", "title": "Total traffic: 1781760", "value": 19.67096487327701}, {"color": "#97c2fc", "id": "128.122.49.30", "label": "128.122.49.30", "shape": "dot", "title": "Total traffic: 1581056", "value": 18.58159181858604}, {"color": "#97c2fc", "id": "137.132.195.252", "label": "137.132.195.252", "shape": "dot", "title": "Total traffic: 1581056", "value": 18.58159181858604}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "130.14.250.7", "label": "", "title": "7657472 packets (2.12%)", "to": "103.37.198.100", "value": 7657472}, {"arrows": "to", "from": "171.67.77.19", "label": "", "title": "5439488 packets (1.51%)", "to": "192.122.131.36", "value": 5439488}, {"arrows": "to", "from": "192.122.131.36", "label": "", "title": "1990656 packets (0.55%)", "to": "171.67.77.19", "value": 1990656}, {"arrows": "to", "from": "129.99.230.54", "label": "", "title": "4294656 packets (1.19%)", "to": "137.132.22.74", "value": 4294656}, {"arrows": "to", "from": "137.132.228.42", "label": "", "title": "3180544 packets (0.88%)", "to": "137.131.17.212", "value": 3180544}, {"arrows": "to", "from": "137.131.17.212", "label": "", "title": "1673216 packets (0.46%)", "to": "137.132.228.42", "value": 1673216}, {"arrows": "to", "from": "155.69.252.133", "label": "", "title": "3020800 packets (0.84%)", "to": "138.75.242.36", "value": 3020800}, {"arrows": "to", "from": "13.107.4.50", "label": "", "title": "2639872 packets (0.73%)", "to": "210.48.222.13", "value": 2639872}, {"arrows": "to", "from": "155.69.203.215", "label": "", "title": "2574336 packets (0.71%)", "to": "74.125.10.7", "value": 2574336}, {"arrows": "to", "from": "192.170.233.203", "label": "", "title": "2449408 packets (0.68%)", "to": "202.6.241.101", "value": 2449408}, {"arrows": "to", "from": "202.21.159.246", "label": "", "title": "2340864 packets (0.65%)", "to": "104.146.199.27", "value": 2340864}, {"arrows": "to", "from": "104.146.199.27", "label": "", "title": "1333248 packets (0.37%)", "to": "202.21.159.246", "value": 1333248}, {"arrows": "to", "from": "155.69.59.250", "label": "", "title": "2187264 packets (0.61%)", "to": "175.156.89.102", "value": 2187264}, {"arrows": "to", "from": "212.219.56.184", "label": "", "title": "2172928 packets (0.60%)", "to": "137.132.204.235", "value": 2172928}, {"arrows": "to", "from": "74.125.68.132", "label": "", "title": "1982464 packets (0.55%)", "to": "123.136.64.32", "value": 1982464}, {"arrows": "to", "from": "192.170.233.204", "label": "", "title": "1918976 packets (0.53%)", "to": "202.6.241.101", "value": 1918976}, {"arrows": "to", "from": "103.31.34.2", "label": "", "title": "1855488 packets (0.51%)", "to": "129.107.118.39", "value": 1855488}, {"arrows": "to", "from": "155.69.120.64", "label": "", "title": "1837056 packets (0.51%)", "to": "74.125.68.95", "value": 1837056}, {"arrows": "to", "from": "158.109.8.13", "label": "", "title": "1781760 packets (0.49%)", "to": "192.122.131.36", "value": 1781760}, {"arrows": "to", "from": "128.122.49.30", "label": "", "title": "1581056 packets (0.44%)", "to": "137.132.195.252", "value": 1581056}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
